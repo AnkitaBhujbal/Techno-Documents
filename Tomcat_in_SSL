@@ -1,0 +1,72 @@
+keytool -genkey -alias mikey -keyalg RSA -keypass db_username -storepass db_password -keystore identity.jks
+
+What is your first and last name?
+  [Unknown]:  company domain name (e.g IA12432 or username.domain.com)
+What is the name of your organizational unit?
+  [Unknown]:  QA
+What is the name of your organization?
+  [Unknown]:  companyName
+What is the name of your City or Locality?
+  [Unknown]:  City
+What is the name of your State or Province?
+  [Unknown]:  Province
+What is the two-letter country code for this unit?
+  [Unknown]:  CountryCode
+Is CN=username.domain.com, OU=QA, O=companyName, L=City, ST=Province, C=CountryCode correct?
+  [no]:  yes
+
+Export Server Certificate:
+keytool -export -alias mikey -storepass db_password -file ServerCertificate.crt -keystore identity.jks
+
+Import Server Certificate In Truststore:
+keytool -import -v -trustcacerts -alias mikey -file ServerCertificate.crt -keystore trust.jks
+
+configuring tomcat in ssl
+
+You can configure the server.xml as follows:
+
+Enable/uncomment the SSL connector and enter the information as given below
+
+<Connector port="8443" protocol="org.apache.coyote.http11.Http11Protocol"
+               maxThreads="150" SSLEnabled="true" scheme="https" secure="true"
+               clientAuth="false" sslProtocol="TLS" keystoreFile="<path of custom keystore file>" keystorePass="<password>" keyAlias="<alias>" keyPass="<password>" truststoreFile="<path of custom truststore file>" truststorePass="<password>"/>
+
+
+You can pass the parameters to the JVM as follows: 
+
+For Tomcat On Windows:
+Edit the catalina.bat file and add the below entries at the end of the file.
+
+set "JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.keyStore=<path of custom keystore file>" 
+set "JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.keyStoreType=<type>" 
+set "JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.keyStorePassword=<password>" 
+set "JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.trustStore=<path of custom truststore file>" 
+set "JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.trustStoreType=<type>" 
+set "JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.trustStorePassword=<password>" 
+set "JAVA_OPTS=%JAVA_OPTS% -Dhttps.protocols=<protocols>"
+
+For Tomcat On UNIX/Linux:
+Edit the catalina.sh file and add the below entries at the end of the file.
+
+JAVA_OPTS="$JAVA_OPTS \-Djavax.net.ssl.keyStore=<path of custom keystore file>" 
+JAVA_OPTS="$JAVA_OPTS \-Djavax.net.ssl.keyStoreType=<type>" 
+JAVA_OPTS="$JAVA_OPTS \-Djavax.net.ssl.keyStorePassword=<password>" 
+JAVA_OPTS="$JAVA_OPTS \-Djavax.net.ssl.trustStore=<path of custom truststore file>" 
+JAVA_OPTS="$JAVA_OPTS \-Djavax.net.ssl.trustStoreType=<type>" 
+JAVA_OPTS="$JAVA_OPTS \-Djavax.net.ssl.trustStorePassword=<password>" 
+JAVA_OPTS="$JAVA_OPTS \-Dhttps.protocols=<protocols>"
+
+
+Additional entries
+
+After setlocal keyword add below
+
+set JAVA_OPTS=%JAVA_OPTS% -Xms1024m -Xmx4000m -XX:PermSize=256m -XX:MaxPermSize=512m
+
+set JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.keyStore=Path where identity.jks is stored
+set JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.keyStoreType=JKS
+set JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.keyStorePassword=db_password
+set JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.trustStore=Path where trust.jks is stored
+set JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.trustStoreType=JKS
+set JAVA_OPTS=%JAVA_OPTS% -Djavax.net.ssl.trustStorePassword=db_password
+set JAVA_OPTS=%JAVA_OPTS% -Dhttps.protocols=TLSv1
