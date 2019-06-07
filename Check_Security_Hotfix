@@ -1,0 +1,5 @@
+Get-HotFix -Description "Security*"
+
+OS Version
+1. Open run window with Win+R
+2. Execute the command winver
