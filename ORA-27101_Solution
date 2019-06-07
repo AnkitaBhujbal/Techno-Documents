@@ -1,0 +1,69 @@
+Open cmd
+sqlplus /nolog
+SQL> conn sys as sysdba
+Enter password:
+Connected.
+
+SQL> shutdown immediate; or SHUTDOWN ABORT;
+Database closed.
+Database dismounted.
+ORACLE instance shut down.
+SQL> startup nomount;
+ORACLE instance started.
+
+Total System Global Area 3373858816 bytes
+Fixed Size                  2180424 bytes
+Variable Size            2533362360 bytes
+Database Buffers          822083584 bytes
+Redo Buffers               16232448 bytes
+
+SQL> alter database mount;
+
+Database altered.
+
+SQL> alter database clear unarchived logfile group 1;
+
+Database altered.
+
+SQL> alter database clear unarchived logfile group 2;
+
+Database altered.
+
+SQL> alter database clear unarchived logfile group 3;
+
+Database altered.
+
+SQL> alter database clear unarchived logfile group 4;
+alter database clear unarchived logfile group 4
+*
+ERROR at line 1:
+ORA-00359: logfile group 4 does not exist
+
+
+SQL> alter database clear unarchived logfile group 5;
+alter database clear unarchived logfile group 5
+*
+ERROR at line 1:
+ORA-00359: logfile group 5 does not exist
+
+
+SQL> alter database clear unarchived logfile group 6;
+alter database clear unarchived logfile group 6
+*
+ERROR at line 1:
+ORA-00359: logfile group 6 does not exist
+
+
+SQL> alter database open;
+
+Database altered.
+
+SQL> select name,open_mode from v$database;
+
+NAME      OPEN_MODE
+--------- --------------------
+ORCL      READ WRITE
+
+SQL>
+
+sql>ALTER SYSTEM SET db_recovery_file_dest_size = 65G SCOPE=BOTH SID='orcl';
