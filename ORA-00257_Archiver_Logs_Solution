@@ -1,0 +1,9 @@
+conn sys as sysdba
+show parameter log_archive_dest
+show parameter recovery
+Open File Location displayed in Value column
+Open RMAN from above path
+connect target SYS@orcl
+password
+list copy of archivelog until time 'SYSDATE-7';
+delete archivelog until time 'SYSDATE-7';
