@@ -1,0 +1,2 @@
+How to start
+sudo docker run --name postgres_ankita -e POSTGRES_PASSWORD=dkpune -p 5433:5432 -d postgres
