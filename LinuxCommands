@@ -1,0 +1,49 @@
+list files and directories
+ls
+
+list all files with permissions
+ls -la 
+
+change directory
+cd directory_name 
+
+print current working directory
+pwd
+
+create a directory
+mkdir new_folder
+
+remove a file
+rm file
+
+remove a directory and its contents
+rm -r folder
+
+copy file
+cp source dest
+
+copy directory
+cp -r source_dir dest_dir
+
+move or rename files
+mv old new
+
+edit using Vim
+vim file
+
+name filename
+find /path
+
+memory usage
+free -h
+
+disk space usage
+df -h
+
+change permissions
+chmod 755 file
+
+
+
+Copy Files from connected VM to other VM
+rsync -avz /home/eQubeMI/MIQA/Ankita/ eQubeMI@192.168.137.232:/home/eQubeMI/MIQA/
